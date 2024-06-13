@@ -9,11 +9,12 @@ Available options:
 
 
 def main(argv: list, pywc: Pywc) -> None:
-    if len(argv) < 2:
+
+    if len(argv) < 3:
         print("Usage: python pywc.py -option <filename>")
         return
 
-    filename = argv[1]
+    filename = argv[2]
 
     if not os.path.isfile(filename):
         print(f"File '{filename}' does not exist.")

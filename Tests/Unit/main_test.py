@@ -8,7 +8,7 @@ from pywc import main
 class MainTest(unittest.TestCase):
 
     def test_main_calls_pywc(self):
-        filename = 'main_test_c_option.txt'
+        filename = 'test_c_option_10.txt'
         file_length = 100
 
         with open(filename, 'w') as file:
@@ -29,7 +29,7 @@ class MainTest(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_c_option(self, stdout):
 
-        filename = 'main_test_c_option.txt'
+        filename = 'test_c_option_10.txt'
         file_length = 100
 
         with open(filename, 'w') as file:
@@ -50,7 +50,7 @@ class MainTest(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_wrong_option(self, stdout):
-        filename = 'main_test_c_option.txt'
+        filename = 'test_c_option_10.txt'
         file_length = 100
 
         with open(filename, 'w') as file:
@@ -71,7 +71,7 @@ class MainTest(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_no_option(self, stdout):
-        filename = 'main_test_c_option.txt'
+        filename = 'test_c_option_10.txt'
         file_length = 100
 
         with open(filename, 'w') as file:
@@ -105,7 +105,7 @@ class MainTest(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_error_wrong_file(self, stdout):
-        filename = 'main_test_c_option.txt'
+        filename = 'test_c_option_10.txt'
         file_length = 100
 
         with open(filename, 'w') as file:
