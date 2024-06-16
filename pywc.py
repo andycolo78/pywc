@@ -24,7 +24,7 @@ def main(argv: list, pywc: Pywc) -> None:
 
     if '-c' in argv:
         result = pywc.count_bytes()
-        print(f"{result} {filename}")
+        print(f"{result} bytes {filename}")
         return
 
     print(f"Option not valid. Allowed options: -c")

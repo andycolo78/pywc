@@ -14,7 +14,7 @@ class MainTest(unittest.TestCase):
         with open(filename, 'w') as file:
             file.write('x'*file_length)
 
-        options = ['-c', filename]
+        options = ['pywc.py', '-c', filename]
 
         mocked_pywc = MagicMock()
 
@@ -29,13 +29,13 @@ class MainTest(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_c_option(self, stdout):
 
-        filename = 'test_c_option_10.txt'
-        file_length = 100
+        filename = 'test_c_option_1M.txt'
+        file_length = 1000000
 
         with open(filename, 'w') as file:
             file.write('x' * file_length)
 
-        options = ['-c', filename]
+        options = ['pywc.py', '-c', filename]
 
         mocked_pywc = MagicMock()
         mocked_pywc.count_bytes.return_value = file_length
@@ -44,7 +44,29 @@ class MainTest(unittest.TestCase):
 
         printed_message = stdout.getvalue().strip()
 
-        self.assertEqual(f"{file_length} {filename}", printed_message)
+        self.assertEqual(f"{file_length} bytes {filename}", printed_message)
+
+        os.remove(filename)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_l_option(self, stdout):
+
+        filename = 'test_l_option_1000.txt'
+        lines_number = 1000
+
+        with open(filename, 'w') as file:
+            file.write('zxcvbnmasdfghjklqwertyuiop1234567890\n' * lines_number)
+
+        options = ['pywc.py', '-l', filename]
+
+        mocked_pywc = MagicMock()
+        mocked_pywc.count_lines.return_value = lines_number
+
+        main(options, mocked_pywc)
+
+        printed_message = stdout.getvalue().strip()
+
+        self.assertEqual(f"{lines_number} lines {filename}", printed_message)
 
         os.remove(filename)
 
@@ -56,7 +78,7 @@ class MainTest(unittest.TestCase):
         with open(filename, 'w') as file:
             file.write('x' * file_length)
 
-        options = ['-x', filename]
+        options = ['pywc.py', '-x', filename]
 
         mocked_pywc = MagicMock()
         mocked_pywc.count_bytes.return_value = file_length
@@ -77,7 +99,7 @@ class MainTest(unittest.TestCase):
         with open(filename, 'w') as file:
             file.write('x' * file_length)
 
-        options = [filename]
+        options = ['pywc.py', filename]
 
         mocked_pywc = MagicMock()
 
@@ -92,7 +114,7 @@ class MainTest(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_no_file(self, stdout):
 
-        options = ['-c']
+        options = ['pywc.py', '-c']
 
         mocked_pywc = MagicMock()
 
@@ -111,7 +133,7 @@ class MainTest(unittest.TestCase):
         with open(filename, 'w') as file:
             file.write('x' * file_length)
 
-        options = ['-c', 'xxx']
+        options = ['pywc.py', '-c', 'xxx']
 
         mocked_pywc = MagicMock()
         mocked_pywc.count_bytes.return_value = file_length
