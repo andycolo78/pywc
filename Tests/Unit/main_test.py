@@ -122,7 +122,7 @@ class MainTest(unittest.TestCase):
 
         printed_message = stdout.getvalue().strip()
 
-        self.assertEqual("Usage: python pywc.py -option <filename>", printed_message)
+        self.assertEqual("Usage: python pywc.py -option <filename>. Allowed options: -c", printed_message)
 
 
     @patch('sys.stdout', new_callable=StringIO)
