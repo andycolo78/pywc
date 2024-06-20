@@ -5,13 +5,24 @@ from Utils.pywc import Pywc
 '''
 Available options:
 * -c : count bytes
+* -l : count lines
+'''
+
+usage_lbl = '''
+Usage: python pywc.py option <filename>
+options:
+-c : count bytes
+-l : count lines
+'''
+option_not_valid_lbl = '''
+Option not valid. Allowed options: -c, -l    
 '''
 
 
 def main(argv: list, pywc: Pywc) -> None:
 
     if len(argv) < 3:
-        print("Usage: python pywc.py -option <filename>")
+        print(usage_lbl)
         return
 
     filename = argv[2]
@@ -27,7 +38,12 @@ def main(argv: list, pywc: Pywc) -> None:
         print(f"{result} bytes {filename}")
         return
 
-    print(f"Option not valid. Allowed options: -c")
+    if '-l' in argv:
+        result = pywc.count_lines()
+        print(f"{result} lines {filename}")
+        return
+
+    print(option_not_valid_lbl)
 
 
 if __name__ == "__main__":
