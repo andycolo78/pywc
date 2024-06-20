@@ -17,11 +17,11 @@ class PywcTest(unittest.TestCase):
         ("test_l_10_no_termination", '-l', '.\\Tests\\Dataset\\test_l_option_10_no_termination.txt',
          '10 lines .\\Tests\\Dataset\\test_l_option_10_no_termination.txt'),
         ("test_no_option", '', '.\\Tests\\Dataset\\test_c_option_1M.txt',
-         'Usage: python pywc.py -option <filename>'),
+         'Usage: python pywc.py option <filename>\noptions:\n-c : count bytes\n-l : count lines'),
         ("test_wrong_option", '-x', '.\\Tests\\Dataset\\test_c_option_1M.txt',
-         'Option not valid. Allowed options: -c'),
+         'Option not valid. Allowed options: -c, -l'),
         ("test_no_file", '-c', '',
-         'Usage: python pywc.py -option <filename>'),
+         'Usage: python pywc.py option <filename>\noptions:\n-c : count bytes\n-l : count lines'),
         ("test_wrong_file", '-c', '.\\xxx.txt',
          'File \'.\\xxx.txt\' does not exist.')
     ])

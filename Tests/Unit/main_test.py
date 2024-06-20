@@ -21,6 +21,7 @@ class MainTest(unittest.TestCase):
         main(options, mocked_pywc)
 
         mocked_pywc.set_file.assert_called_with(filename)
+        mocked_pywc.set_counters.assert_called()
         mocked_pywc.count_bytes.assert_called()
         mocked_pywc.count_bytes.return_value = file_length
 
@@ -38,7 +39,7 @@ class MainTest(unittest.TestCase):
         options = ['pywc.py', '-c', filename]
 
         mocked_pywc = MagicMock()
-        mocked_pywc.count_bytes.return_value = file_length
+        mocked_pywc.count_bytes.return_value = [file_length]
 
         main(options, mocked_pywc)
 
@@ -60,7 +61,7 @@ class MainTest(unittest.TestCase):
         options = ['pywc.py', '-l', filename]
 
         mocked_pywc = MagicMock()
-        mocked_pywc.count_lines.return_value = lines_number
+        mocked_pywc.count_lines.return_value = [lines_number]
 
         main(options, mocked_pywc)
 
@@ -81,7 +82,6 @@ class MainTest(unittest.TestCase):
         options = ['pywc.py', '-x', filename]
 
         mocked_pywc = MagicMock()
-        mocked_pywc.count_bytes.return_value = file_length
 
         main(options, mocked_pywc)
 
@@ -107,7 +107,7 @@ class MainTest(unittest.TestCase):
 
         printed_message = stdout.getvalue().strip()
 
-        self.assertEqual("Usage: python pywc.py -option <filename>", printed_message)
+        self.assertEqual('Usage: python pywc.py option <filename>\noptions:\n-c : count bytes\n-l : count lines', printed_message)
 
         os.remove(filename)
 
@@ -122,7 +122,7 @@ class MainTest(unittest.TestCase):
 
         printed_message = stdout.getvalue().strip()
 
-        self.assertEqual("Usage: python pywc.py -option <filename>. Allowed options: -c", printed_message)
+        self.assertEqual('Usage: python pywc.py option <filename>\noptions:\n-c : count bytes\n-l : count lines', printed_message)
 
 
     @patch('sys.stdout', new_callable=StringIO)
@@ -136,7 +136,6 @@ class MainTest(unittest.TestCase):
         options = ['pywc.py', '-c', 'xxx']
 
         mocked_pywc = MagicMock()
-        mocked_pywc.count_bytes.return_value = file_length
 
         main(options, mocked_pywc)
 

@@ -1,6 +1,6 @@
 import os
 import sys
-from Utils.pywc import Pywc
+from App.pywc import Pywc
 
 '''
 Available options:

@@ -3,7 +3,7 @@ import unittest
 
 from parameterized import parameterized
 
-from Utils.pywc import Pywc
+from App.pywc import Pywc
 
 
 class PywcTest(unittest.TestCase):
