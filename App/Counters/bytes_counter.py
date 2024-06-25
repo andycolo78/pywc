@@ -1,8 +1,7 @@
-import counter
+from App.Counters.counter import Counter
 
 
-class BytesCounter(counter):
+class BytesCounter(Counter):
 
-    def get_count(self, chunk: str):
-        """ count bytes in chunk"""
-        pass
+    def get_count(self, chunk: str) -> int:
+        return len(chunk)

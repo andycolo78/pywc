@@ -1,3 +1,5 @@
+from App.Counters.counter import Counter
+
 """
 Manages pywc business logic
 """
@@ -11,6 +13,23 @@ class Pywc:
 
     def set_file(self, filename: str) -> None:
         self.__filename = filename
+
+    def count(self, counters: list):
+        for counter in counters:
+            if not isinstance(counter, Counter):
+                raise TypeError('Only Counter subclasses objects are allowed')
+
+        count_list = []
+        for chunk in self.__read_file_by_chunk():
+            for idx, counter in enumerate(counters):
+                count = counter.get_count(chunk)
+                if len(count_list) <= idx:
+                    count_list.append(count)
+                    continue
+                count_list[idx] += count
+                idx += idx
+
+        return count_list
 
     def count_bytes(self) -> int:
         count = 0

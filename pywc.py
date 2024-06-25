@@ -1,6 +1,7 @@
 import os
 import sys
 from App.pywc import Pywc
+from App.Counters.bytes_counter import BytesCounter
 
 '''
 Available options:
@@ -34,8 +35,8 @@ def main(argv: list, pywc: Pywc) -> None:
     pywc.set_file(filename)
 
     if '-c' in argv:
-        result = pywc.count_bytes()
-        print(f"{result} bytes {filename}")
+        result = pywc.count([BytesCounter()])
+        print(f"{result[0]} bytes {filename}")
         return
 
     if '-l' in argv:

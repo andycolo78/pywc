@@ -39,7 +39,7 @@ class MainTest(unittest.TestCase):
         options = ['pywc.py', '-c', filename]
 
         mocked_pywc = MagicMock()
-        mocked_pywc.count_bytes.return_value = [file_length]
+        mocked_pywc.count.return_value = [file_length]
 
         main(options, mocked_pywc)
 
