@@ -14,8 +14,8 @@ class BytesCounterTest(unittest.TestCase):
 
     @parameterized.expand([
         ("test_0", 'xxxx', 0),
-        ("test_1", 'xxxxxxxxxx/n', 1),
-        ("test_10_terminated", 'xx/nxx/nxx/nxx/nxx/nxx/nxx/nxx/nxx/nxx/n', 10)
+        ("test_1", 'xxxxxxxxxx\n', 1),
+        ("test_10", 'xx\nxx\nxx\nxx\nxx\nxx\nxx\nxx\nxx\nxx\n', 10)
     ])
     def test_count_lines(self, name, test_chunk, expected_count):
         lines_counter = LinesCounter()

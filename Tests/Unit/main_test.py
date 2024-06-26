@@ -21,9 +21,7 @@ class MainTest(unittest.TestCase):
         main(options, mocked_pywc)
 
         mocked_pywc.set_file.assert_called_with(filename)
-        mocked_pywc.set_counters.assert_called()
-        mocked_pywc.count_bytes.assert_called()
-        mocked_pywc.count_bytes.return_value = file_length
+        mocked_pywc.count.assert_called()
 
         os.remove(filename)
 
@@ -61,7 +59,7 @@ class MainTest(unittest.TestCase):
         options = ['pywc.py', '-l', filename]
 
         mocked_pywc = MagicMock()
-        mocked_pywc.count_lines.return_value = [lines_number]
+        mocked_pywc.count.return_value = [lines_number]
 
         main(options, mocked_pywc)
 
