@@ -70,6 +70,28 @@ class MainTest(unittest.TestCase):
         os.remove(filename)
 
     @patch('sys.stdout', new_callable=StringIO)
+    def test_main_w_option(self, stdout):
+
+        filename = 'test_w_option_1000.txt'
+        word_number = 1000
+
+        with open(filename, 'w') as file:
+            file.write('word ' * word_number)
+
+        options = ['pywc.py', '-w', filename]
+
+        mocked_pywc = MagicMock()
+        mocked_pywc.count.return_value = [word_number]
+
+        main(options, mocked_pywc)
+
+        printed_message = stdout.getvalue().strip()
+
+        self.assertEqual(f"{word_number} words {filename}", printed_message)
+
+        os.remove(filename)
+
+    @patch('sys.stdout', new_callable=StringIO)
     def test_main_wrong_option(self, stdout):
         filename = 'test_c_option_10.txt'
         file_length = 100

@@ -19,33 +19,17 @@ class Pywc:
             if not isinstance(counter, Counter):
                 raise TypeError('Only Counter subclasses objects are allowed')
 
-        count_list = []
+        count_list = [0] * len(counters)
+        last_chunk = ''
         for chunk in self.__read_file_by_chunk():
             for idx, counter in enumerate(counters):
-                count = counter.get_count(chunk)
-                if len(count_list) <= idx:
-                    count_list.append(count)
-                    continue
-                count_list[idx] += count
-                idx += idx
+                count_list[idx] += counter.get_count(chunk)
+            last_chunk = chunk
+
+        for idx, counter in enumerate(counters):
+            count_list[idx] += 1 if counter.should_count_last(last_chunk) else 0
 
         return count_list
-
-    def count_bytes(self) -> int:
-        count = 0
-        for chunk in self.__read_file_by_chunk():
-            count += len(chunk)
-
-        return count
-
-    def count_lines(self) -> int:
-        count = 0
-        for chunk in self.__read_file_by_chunk():
-            count += str(chunk).count('\n')
-
-        count += 1 if not str(chunk).endswith('\n') else 0
-
-        return count
 
     def __read_file_by_chunk(self) -> bytes:
         with open(self.__filename, 'r') as file:

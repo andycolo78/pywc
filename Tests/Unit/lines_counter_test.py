@@ -22,3 +22,13 @@ class BytesCounterTest(unittest.TestCase):
         asserted_count = lines_counter.get_count(test_chunk)
 
         self.assertEqual(expected_count, asserted_count)
+
+    @parameterized.expand([
+        ("test_false", 'xxxx', True),
+        ("test_true", 'xxxx\n', False),
+    ])
+    def test_should_count_last(self, name, test_chunk, expected_result):
+        lines_counter = LinesCounter()
+        asserted_is_terminated = lines_counter.should_count_last(test_chunk)
+
+        self.assertEqual(expected_result, asserted_is_terminated)

@@ -3,6 +3,7 @@ import sys
 from App.pywc import Pywc
 from App.Counters.bytes_counter import BytesCounter
 from App.Counters.lines_counter import LinesCounter
+from App.Counters.words_counter import WordsCounter
 
 '''
 Available options:
@@ -43,6 +44,11 @@ def main(argv: list, pywc: Pywc) -> None:
     if '-l' in argv:
         result = pywc.count([LinesCounter()])
         print(f"{result[0]} lines {filename}")
+        return
+
+    if '-w' in argv:
+        result = pywc.count([WordsCounter()])
+        print(f"{result[0]} words {filename}")
         return
 
     print(option_not_valid_lbl)
