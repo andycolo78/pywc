@@ -48,6 +48,29 @@ class MainTest(unittest.TestCase):
         os.remove(filename)
 
     @patch('sys.stdout', new_callable=StringIO)
+    def test_main_c_option_1(self, stdout):
+
+        filename = 'test_c_option_1.txt'
+        file_length = 1
+
+        with open(filename, 'w') as file:
+            file.write('x' * file_length)
+
+        options = ['pywc.py', '-c', filename]
+
+        mocked_pywc = MagicMock()
+        mocked_pywc.count.return_value = [file_length]
+
+        main(options, mocked_pywc)
+
+        printed_message = stdout.getvalue().strip()
+
+        self.assertEqual(f"{file_length} byte {filename}", printed_message)
+
+        os.remove(filename)
+
+
+    @patch('sys.stdout', new_callable=StringIO)
     def test_main_l_option(self, stdout):
 
         filename = 'test_l_option_1000.txt'
@@ -70,6 +93,28 @@ class MainTest(unittest.TestCase):
         os.remove(filename)
 
     @patch('sys.stdout', new_callable=StringIO)
+    def test_main_l_option_1(self, stdout):
+
+        filename = 'test_l_option_1.txt'
+        lines_number = 1
+
+        with open(filename, 'w') as file:
+            file.write('zxcvbnmasdfghjklqwertyuiop1234567890\n' * lines_number)
+
+        options = ['pywc.py', '-l', filename]
+
+        mocked_pywc = MagicMock()
+        mocked_pywc.count.return_value = [lines_number]
+
+        main(options, mocked_pywc)
+
+        printed_message = stdout.getvalue().strip()
+
+        self.assertEqual(f"{lines_number} line {filename}", printed_message)
+
+        os.remove(filename)
+
+    @patch('sys.stdout', new_callable=StringIO)
     def test_main_w_option(self, stdout):
 
         filename = 'test_w_option_1000.txt'
@@ -88,6 +133,28 @@ class MainTest(unittest.TestCase):
         printed_message = stdout.getvalue().strip()
 
         self.assertEqual(f"{word_number} words {filename}", printed_message)
+
+        os.remove(filename)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_w_option_1(self, stdout):
+
+        filename = 'test_w_option_1000.txt'
+        word_number = 1
+
+        with open(filename, 'w') as file:
+            file.write('word ' * word_number)
+
+        options = ['pywc.py', '-w', filename]
+
+        mocked_pywc = MagicMock()
+        mocked_pywc.count.return_value = [word_number]
+
+        main(options, mocked_pywc)
+
+        printed_message = stdout.getvalue().strip()
+
+        self.assertEqual(f"{word_number} word {filename}", printed_message)
 
         os.remove(filename)
 

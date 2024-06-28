@@ -38,17 +38,17 @@ def main(argv: list, pywc: Pywc) -> None:
 
     if '-c' in argv:
         result = pywc.count([BytesCounter()])
-        print(f"{result[0]} bytes {filename}")
+        print(f"{result[0]} {'byte' if result[0] == 1 else 'bytes'} {filename}")
         return
 
     if '-l' in argv:
         result = pywc.count([LinesCounter()])
-        print(f"{result[0]} lines {filename}")
+        print(f"{result[0]} {'line' if result[0] == 1 else 'lines'} {filename}")
         return
 
     if '-w' in argv:
         result = pywc.count([WordsCounter()])
-        print(f"{result[0]} words {filename}")
+        print(f"{result[0]} {'word' if result[0] == 1 else 'words'} {filename}")
         return
 
     print(option_not_valid_lbl)

@@ -6,12 +6,16 @@ from parameterized import parameterized
 class PywcTest(unittest.TestCase):
 
     @parameterized.expand([
+        ("test_c_1", '-c', '.\\Tests\\Dataset\\test_c_option_1.txt',
+         '1 byte .\\Tests\\Dataset\\test_c_option_1.txt'),
         ("test_c_10", '-c', '.\\Tests\\Dataset\\test_c_option_10.txt',
          '10 bytes .\\Tests\\Dataset\\test_c_option_10.txt'),
         ("test_c_100", '-c', '.\\Tests\\Dataset\\test_c_option_100.txt',
          '100 bytes .\\Tests\\Dataset\\test_c_option_100.txt'),
         ("test_c_1M", '-c', '.\\Tests\\Dataset\\test_c_option_1M.txt',
          '1000000 bytes .\\Tests\\Dataset\\test_c_option_1M.txt'),
+        ("test_l_1", '-l', '.\\Tests\\Dataset\\test_l_option_1.txt',
+         '1 line .\\Tests\\Dataset\\test_l_option_1.txt'),
         ("test_l_10", '-l', '.\\Tests\\Dataset\\test_l_option_10.txt',
          '10 lines .\\Tests\\Dataset\\test_l_option_10.txt'),
         ("test_l_10_no_termination", '-l', '.\\Tests\\Dataset\\test_l_option_10_no_termination.txt',
