@@ -5,6 +5,8 @@ from parameterized import parameterized
 
 from App.pywc import Pywc
 from App.Counters.bytes_counter import BytesCounter
+from App.Counters.lines_counter import LinesCounter
+from App.Counters.words_counter import WordsCounter
 
 
 class PywcTest(unittest.TestCase):
@@ -38,8 +40,7 @@ class PywcTest(unittest.TestCase):
 
         pywc = Pywc()
         pywc.set_file(filename)
-        bytes_counter = BytesCounter()
-        bytes_count = pywc.count([bytes_counter])
+        bytes_count = pywc.count([BytesCounter()])
 
         os.remove(filename)
 
@@ -58,11 +59,30 @@ class PywcTest(unittest.TestCase):
 
         pywc = Pywc()
         pywc.set_file(filename)
-        lines_count = pywc.count_lines()
+        lines_count = pywc.count([LinesCounter()])
 
         os.remove(filename)
 
-        self.assertEqual(lines_number, lines_count)
+        self.assertEqual(lines_number, lines_count[0])
+
+    @parameterized.expand([
+        ("test_w_100", 100),
+        ("test_w_1000", 1000),
+        ("test_w_1", 1)
+    ])
+    def test_count_words(self, name, words_number):
+        filename = 'test_count_lines.txt'
+
+        with open(filename, 'w') as file:
+            file.write('word ' * words_number)
+
+        pywc = Pywc()
+        pywc.set_file(filename)
+        words_count = pywc.count([WordsCounter()])
+
+        os.remove(filename)
+
+        self.assertEqual(words_number, words_count[0])
 
     def test_count_lines_non_terminated(self):
         filename = 'test_count_lines_non_terminated.txt'
@@ -72,9 +92,9 @@ class PywcTest(unittest.TestCase):
 
         pywc = Pywc()
         pywc.set_file(filename)
-        lines_count = pywc.count_lines()
+        lines_count = pywc.count([LinesCounter()])
 
         os.remove(filename)
 
-        self.assertEqual(2, lines_count)
+        self.assertEqual(2, lines_count[0])
 
