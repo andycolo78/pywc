@@ -180,26 +180,66 @@ class MainTest(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_no_option(self, stdout):
-        filename = 'test_c_option_10.txt'
-        file_length = 100
+        filename = 'test_no_option.txt'
+        file_string = '''word1 word2
+        word3
+        word4
+        '''
+        bytes_length = 25
+        lines_length = 3
+        words_length = 4
 
         with open(filename, 'w') as file:
-            file.write('x' * file_length)
+            file.write(file_string)
 
         options = ['pywc.py', filename]
 
         mocked_pywc = MagicMock()
-
+        mocked_pywc.count.return_value = [bytes_length, lines_length, words_length]
         main(options, mocked_pywc)
 
         printed_message = stdout.getvalue().strip()
 
-        self.assertEqual('Usage: python pywc.py option <filename>\noptions:\n-c : count bytes\n-l : count lines', printed_message)
+        self.assertEqual(f'{bytes_length} bytes - {lines_length} lines - {words_length} words {filename}',
+                         printed_message)
+
+        os.remove(filename)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_no_option_1(self, stdout):
+        filename = 'test_no_option.txt'
+        file_string = 'w'
+        bytes_length = 1
+        lines_length = 1
+        words_length = 1
+
+        with open(filename, 'w') as file:
+            file.write(file_string)
+
+        options = ['pywc.py', filename]
+
+        mocked_pywc = MagicMock()
+        mocked_pywc.count.return_value = [bytes_length, lines_length, words_length]
+        main(options, mocked_pywc)
+
+        printed_message = stdout.getvalue().strip()
+
+        self.assertEqual(f'{bytes_length} byte - {lines_length} line - {words_length} word {filename}',
+                         printed_message)
 
         os.remove(filename)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_no_file(self, stdout):
+
+        expected_message = '''
+Usage: python pywc.py option <filename>
+options:
+-c : count bytes
+-l : count lines
+-w : count words
+no option : count bytes, lines and words
+'''
 
         options = ['pywc.py', '-c']
 
@@ -209,8 +249,7 @@ class MainTest(unittest.TestCase):
 
         printed_message = stdout.getvalue().strip()
 
-        self.assertEqual('Usage: python pywc.py option <filename>\noptions:\n-c : count bytes\n-l : count lines', printed_message)
-
+        self.assertEqual(expected_message.strip(), printed_message.strip())
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_error_wrong_file(self, stdout):

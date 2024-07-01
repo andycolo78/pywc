@@ -9,4 +9,5 @@ class WordsCounter(Counter):
         words = re.findall(r'(\s+)', chunk)
         return len(words)
 
-
+    def should_count_last(self, chunk: str) -> bool:
+        return not bool(re.search(r'\s$', chunk))
