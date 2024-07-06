@@ -2,6 +2,8 @@ import os
 import unittest
 from io import StringIO
 from unittest.mock import MagicMock, patch
+
+from App.Readers.file_reader import FileReader
 from pywc import main
 
 
@@ -20,7 +22,7 @@ class MainTest(unittest.TestCase):
 
         main(options, mocked_pywc)
 
-        mocked_pywc.set_file.assert_called_with(filename)
+        mocked_pywc.set_reader.assert_called()
         mocked_pywc.count.assert_called()
 
         os.remove(filename)

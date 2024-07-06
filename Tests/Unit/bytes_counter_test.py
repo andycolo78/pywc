@@ -1,5 +1,3 @@
-import base64
-import os
 import unittest
 
 from parameterized import parameterized

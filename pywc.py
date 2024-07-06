@@ -1,5 +1,7 @@
 import os
 import sys
+
+from App.Readers.file_reader import FileReader
 from App.pywc import Pywc
 from App.Counters.bytes_counter import BytesCounter
 from App.Counters.lines_counter import LinesCounter
@@ -36,14 +38,15 @@ def main(argv: list, pywc: Pywc) -> None:
         print(usage_lbl)
         return
 
-    option = None if len(argv) == 2 else argv[1]
+    option = None if len(argv) < 3 else argv[1]
     filename = argv[1] if len(argv) == 2 else argv[2]
 
     if not os.path.isfile(filename):
         print(f"File '{filename}' does not exist.")
         return
 
-    pywc.set_file(filename)
+    file_reader = FileReader(filename)
+    pywc.set_reader(file_reader)
 
     if option is None:
         result = pywc.count([BytesCounter(), LinesCounter(), WordsCounter()])

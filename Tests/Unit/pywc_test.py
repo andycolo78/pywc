@@ -3,6 +3,7 @@ import unittest
 
 from parameterized import parameterized
 
+from App.Readers.file_reader import FileReader
 from App.pywc import Pywc
 from App.Counters.bytes_counter import BytesCounter
 from App.Counters.lines_counter import LinesCounter
@@ -11,19 +12,14 @@ from App.Counters.words_counter import WordsCounter
 
 class PywcTest(unittest.TestCase):
 
-    def test_set_file(self):
-        filename = 'test_set_file.txt'
-        file_length = 100
-
-        with open(filename, 'w') as file:
-            file.write('x'*file_length)
+    def test_set_reader(self):
+        filename = 'test_set_reader.txt'
 
         pywc = Pywc()
-        pywc.set_file(filename)
+        reader = FileReader(filename)
+        pywc.set_reader(reader)
 
-        os.remove(filename)
-
-        self.assertEqual(filename, pywc._Pywc__filename)
+        self.assertEqual(reader, pywc._Pywc__reader)
 
     @parameterized.expand([
         ("test_c_100", 100),
@@ -39,7 +35,8 @@ class PywcTest(unittest.TestCase):
             file.write('x'*file_length)
 
         pywc = Pywc()
-        pywc.set_file(filename)
+        file_reader = FileReader(filename)
+        pywc.set_reader(file_reader)
         bytes_count = pywc.count([BytesCounter()])
 
         os.remove(filename)
@@ -58,7 +55,8 @@ class PywcTest(unittest.TestCase):
             file.write('zxcvbnmasdfghjklqwertyuiop1234567890\n' * lines_number)
 
         pywc = Pywc()
-        pywc.set_file(filename)
+        file_reader = FileReader(filename)
+        pywc.set_reader(file_reader)
         lines_count = pywc.count([LinesCounter()])
 
         os.remove(filename)
@@ -77,7 +75,8 @@ class PywcTest(unittest.TestCase):
             file.write('word ' * words_number)
 
         pywc = Pywc()
-        pywc.set_file(filename)
+        file_reader = FileReader(filename)
+        pywc.set_reader(file_reader)
         words_count = pywc.count([WordsCounter()])
 
         os.remove(filename)
@@ -91,7 +90,8 @@ class PywcTest(unittest.TestCase):
             file.write('xxxxxxxxxx\nyyyyyyyyy')
 
         pywc = Pywc()
-        pywc.set_file(filename)
+        file_reader = FileReader(filename)
+        pywc.set_reader(file_reader)
         lines_count = pywc.count([LinesCounter()])
 
         os.remove(filename)
