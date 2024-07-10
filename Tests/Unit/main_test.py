@@ -1,4 +1,6 @@
+import io
 import os
+import sys
 import unittest
 from io import StringIO
 from unittest.mock import MagicMock, patch
@@ -70,7 +72,6 @@ class MainTest(unittest.TestCase):
         self.assertEqual(f"{file_length} byte {filename}", printed_message)
 
         os.remove(filename)
-
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_l_option(self, stdout):
@@ -234,24 +235,21 @@ class MainTest(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_no_file(self, stdout):
 
-        expected_message = '''
-Usage: python pywc.py option <filename>
-options:
--c : count bytes
--l : count lines
--w : count words
-no option : count bytes, lines and words
-'''
+        stream_length = 1000
 
         options = ['pywc.py', '-c']
 
         mocked_pywc = MagicMock()
+        mocked_pywc.count.return_value = [stream_length]
 
         main(options, mocked_pywc)
 
+        stream_string = 'x' * stream_length
+        sys.stdin = io.StringIO(stream_string)
+
         printed_message = stdout.getvalue().strip()
 
-        self.assertEqual(expected_message.strip(), printed_message.strip())
+        self.assertEqual(f"{stream_length} bytes", printed_message.strip())
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_main_error_wrong_file(self, stdout):

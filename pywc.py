@@ -1,7 +1,10 @@
 import os
 import sys
 
+import select
+
 from App.Readers.file_reader import FileReader
+from App.Readers.stdin_reader import StdinReader
 from App.pywc import Pywc
 from App.Counters.bytes_counter import BytesCounter
 from App.Counters.lines_counter import LinesCounter
@@ -30,48 +33,64 @@ valid_options = ['-c', '-l', '-w']
 
 
 def main(argv: list, pywc: Pywc) -> None:
-    if len(argv) < 2:
-        print(usage_lbl)
-        return
+    params = parse_argv(argv)
 
-    if len(argv) < 3 and argv[1] in valid_options:
-        print(usage_lbl)
-        return
+    if params['filename'] is None:
+        if sys.stdin.isatty() and not select.select([sys.stdin], [], [], 0.0)[0]:
+            print(usage_lbl)
+            return
+        reader = StdinReader()
+    else:
+        if not os.path.isfile(params['filename']):
+            print(f"File '{params['filename']}' does not exist.")
+            return
+        reader = FileReader(params['filename'])
 
-    option = None if len(argv) < 3 else argv[1]
-    filename = argv[1] if len(argv) == 2 else argv[2]
+    pywc.set_reader(reader)
 
-    if not os.path.isfile(filename):
-        print(f"File '{filename}' does not exist.")
-        return
-
-    file_reader = FileReader(filename)
-    pywc.set_reader(file_reader)
-
-    if option is None:
+    if params['option'] is None:
         result = pywc.count([BytesCounter(), LinesCounter(), WordsCounter()])
         print(
             f"{result[0]} {'byte' if result[0] == 1 else 'bytes'} "
             f"- {result[1]} {'line' if result[1] == 1 else 'lines'} "
-            f"- {result[2]} {'word' if result[2] == 1 else 'words'} {filename}")
+            f"- {result[2]} {'word' if result[2] == 1 else 'words'} "
+            f"{'' if params['filename'] is None else params['filename']}")
         return
 
-    if '-c' in option:
+    if '-c' in params['option']:
         result = pywc.count([BytesCounter()])
-        print(f"{result[0]} {'byte' if result[0] == 1 else 'bytes'} {filename}")
+        print(f"{result[0]} {'byte' if result[0] == 1 else 'bytes'} " 
+              f"{'' if params['filename'] is None else params['filename']}")
         return
 
-    if '-l' in option:
+    if '-l' in params['option']:
         result = pywc.count([LinesCounter()])
-        print(f"{result[0]} {'line' if result[0] == 1 else 'lines'} {filename}")
+        print(f"{result[0]} {'line' if result[0] == 1 else 'lines'} "
+              f"{'' if params['filename'] is None else params['filename']}")
         return
 
-    if '-w' in option:
+    if '-w' in params['option']:
         result = pywc.count([WordsCounter()])
-        print(f"{result[0]} {'word' if result[0] == 1 else 'words'} {filename}")
+        print(f"{result[0]} {'word' if result[0] == 1 else 'words'} "
+              f"{'' if params['filename'] is None else params['filename']}")
         return
 
     print(option_not_valid_lbl)
+
+
+def parse_argv(argv: list) -> dict:
+    result = {'option': None, 'filename': None}
+
+    if len(argv) < 2:
+        return result
+
+    for arg in argv[1:]:
+        if len(arg) == 2 and arg.startswith('-'):
+            result['option'] = arg
+            continue
+        result['filename'] = arg
+
+    return result
 
 
 if __name__ == "__main__":
