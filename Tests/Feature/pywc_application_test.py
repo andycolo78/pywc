@@ -1,9 +1,10 @@
+import os
 import subprocess
 import unittest
 from parameterized import parameterized
 
 
-class PywcTest(unittest.TestCase):
+class PywcApplicationTest(unittest.TestCase):
 
     @parameterized.expand([
         ("test_c_1", '-c', '.\\Tests\\Dataset\\test_c_option_1.txt',
@@ -53,7 +54,7 @@ class PywcTest(unittest.TestCase):
         ("test_c_100", '-c', '.\\Tests\\Dataset\\test_c_option_100.txt',
          '100 bytes'),
         ("test_c_1M", '-c', '.\\Tests\\Dataset\\test_c_option_1M.txt',
-         '1000000'),
+         '1000000 bytes'),
         ("test_l_1", '-l', '.\\Tests\\Dataset\\test_l_option_1.txt',
          '1 line'),
         ("test_l_10", '-l', '.\\Tests\\Dataset\\test_l_option_10.txt',
@@ -70,10 +71,8 @@ class PywcTest(unittest.TestCase):
          'Option not valid. Allowed options: -c, -l, -w or no option')
     ])
     def test_stdin_pywc(self, name, command, test_file, expected):
-        args = [f"cat {test_file}", 'python', 'pywc.py']
-        if len(command) > 0:
-            args.append(command)
+        script = f"{'type' if os.name == 'nt' else 'cat'} {test_file} | python pywc.py {'' if len(command) == 0 else command}"
 
-        result = subprocess.run(args, capture_output=True, text=True, cwd='.\\..\\..\\')
+        result = subprocess.run(script, shell=True,  capture_output=True, text=True, cwd='.\\..\\..\\')
 
         self.assertEqual(expected, result.stdout.strip())

@@ -5,7 +5,6 @@ import unittest
 from io import StringIO
 from unittest.mock import MagicMock, patch
 
-from App.Readers.file_reader import FileReader
 from pywc import main
 
 

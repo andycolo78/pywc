@@ -17,8 +17,8 @@ class WordsCounterTest(unittest.TestCase):
         ("test_1", 'xxxxxxxxxx\n', 1),
         ("test_10", 'xx\nxx\nxx\nxx\nxx\nxx\nxx\nxx\nxx\nxx\n', 10)
     ])
-    def test_count_lines(self, name, test_chunk, expected_count):
-        lines_counter = LinesCounter()
-        asserted_count = lines_counter.get_count(test_chunk)
+    def test_count_words(self, name, test_chunk, expected_count):
+        words_counter = WordsCounter()
+        asserted_count = words_counter.get_count(test_chunk)
 
         self.assertEqual(expected_count, asserted_count)

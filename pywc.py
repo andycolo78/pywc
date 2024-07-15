@@ -36,7 +36,7 @@ def main(argv: list, pywc: Pywc) -> None:
     params = parse_argv(argv)
 
     if params['filename'] is None:
-        if sys.stdin.isatty() and not select.select([sys.stdin], [], [], 0.0)[0]:
+        if sys.stdin.isatty():
             print(usage_lbl)
             return
         reader = StdinReader()
